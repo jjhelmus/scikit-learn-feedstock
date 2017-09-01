@@ -1,5 +1,4 @@
 {% set version = "0.19.0" %}
-{% set variant = "openblas" %}
 
 package:
   name: scikit-learn
@@ -10,30 +9,30 @@ source:
   sha256: 25a889df32b9b3353f990726b54b6dc3e52a871ae8aea42e1f49d6726226f83c
 
 build:
-  number: 201
-  # We lack openblas on Windows, and therefore can't build numpy there either currently.
-  skip: true  # [win]
+  number: 2
+  # conda 4.4+ can use this
+  requires_features:
+    blas: {{ blas_impl }}
+  # this is for conda 4.3 and below
   features:
-    - blas_{{ variant }}
+    - nomkl    # [x86 and blas_impl != 'mkl']
 
 requirements:
   build:
+    - {{ compiler('c') }}
+  host:
     - python
     - cython
     - setuptools
-    - blas 1.1 {{ variant }}
-    - openblas 0.2.19|0.2.19.*
-    - numpy 1.9.*  # [not (win and py36)]
-    - numpy 1.11.*  # [win and py36]
+    - numpy
     - scipy
     - nose
+    - mkl-devel  {{ mkl }}  # [blas_impl == 'mkl']
+    - openblas    # [blas_impl == 'openblas']
   run:
     - python
-    - blas 1.1 {{ variant }}
-    - openblas 0.2.19|0.2.19.*
-    - numpy >=1.9  # [not (win and py36)]
-    - numpy >=1.11  # [win and py36]
     - scipy
+    - {{ pin_compatible('numpy') }}
 
 test:
   requires:
