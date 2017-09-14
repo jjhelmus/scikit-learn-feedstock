@@ -7,6 +7,8 @@ package:
 source:
   url: https://github.com/scikit-learn/scikit-learn/archive/{{ version }}.tar.gz
   sha256: 25a889df32b9b3353f990726b54b6dc3e52a871ae8aea42e1f49d6726226f83c
+  patches:
+    - backport_9115.patch  # [win]
 
 build:
   number: 2
