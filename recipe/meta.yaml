@@ -32,7 +32,7 @@ requirements:
     - scipy
     - nose
     - mkl-devel  {{ mkl }}  # [blas_impl == 'mkl']
-    - openblas    # [blas_impl == 'openblas']
+    - openblas-devel {{ openblas }}  # [blas_impl == 'openblas']
   run:
     - python
     - scipy
